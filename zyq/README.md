@@ -12,6 +12,6 @@
 
 效果图2:
 
-<img src="./2.png" width = "100" height = "100" div align=center />
+<img src="./2.png" width = "200" height = "100" div align=center />
 
 
