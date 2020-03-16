@@ -1,10 +1,71 @@
 import cv2
 import numpy as np 
 
-img = cv2.imread('binary-repair.bmp',cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('test/4.bmp',cv2.IMREAD_GRAYSCALE)
 img = np.array(img)
 
-def R(f,g):
+# def D(f,g):
+#     l = max(max(f.shape),max(g.shape))
+#     f = np.pad(f,((int((l-f.shape[0])/2),int((l-f.shape[0])/2)),(int((l-f.shape[1])/2),int((l-f.shape[1])/2))),'constant',constant_values=(255,255))
+#     g = np.pad(g,((int((l-g.shape[0])/2),int((l-g.shape[0])/2)),(int((l-g.shape[1])/2),int((l-g.shape[1])/2))),'constant',constant_values=(255,255))
+
+#     l = max(max(f.shape),max(g.shape))
+#     f = np.pad(f,((0,l-f.shape[0]),(0,l-f.shape[1])),'constant',constant_values=(255,255))
+#     g = np.pad(g,((0,l-g.shape[0]),(0,l-g.shape[1])),'constant',constant_values=(255,255))
+#     cv2.imwrite('tmp/f.bmp',f)
+#     cv2.imwrite('tmp/g.bmp',g)
+
+#     #################################分块统计#####################################
+#     # M行N列的分割
+#     M = 5
+#     N = 5
+#     gap_col = int(np.shape(f)[1]/N)
+#     gap_row = int(np.shape(f)[0]/M)
+#     seq_f = []
+#     seq_g = []
+#     for i in range(N):
+#         for j in range(M):
+#             if i == N-1 and j == M-1: 
+#                 tmp_f = f[j*gap_row:np.shape(f)[0],i*gap_col:np.shape(f)[1]]
+#                 tmp_g = g[j*gap_row:np.shape(f)[0],i*gap_col:np.shape(f)[1]]
+#             elif i==N-1 and not j==M-1:
+#                 tmp_f = f[j*gap_row:(j+1)*gap_row,i*gap_col:np.shape(f)[1]]
+#                 tmp_g = g[j*gap_row:(j+1)*gap_row,i*gap_col:np.shape(f)[1]]
+#             elif j==M-1 and not i==N-1:
+#                 tmp_f = f[j*gap_row:np.shape(f)[0],i*gap_col:(i+1)*gap_col]
+#                 tmp_g = g[j*gap_row:np.shape(f)[0],i*gap_col:(i+1)*gap_col]
+#             else:
+#                 tmp_f = f[j*gap_row:(j+1)*gap_row,i*gap_col:(i+1)*gap_col]
+#                 tmp_g = f[j*gap_row:(j+1)*gap_row,i*gap_col:(i+1)*gap_col]
+#             seq_f.append(np.sum((255-tmp_f)/255))
+#             seq_g.append(np.sum((255-tmp_g)/255))
+#     max_f = max(seq_f)
+#     max_g = max(seq_g)
+#     seq_f = seq_f/max_f
+#     seq_g = seq_g/max_g
+#     # print(seq_f,seq_g)
+#     r1 = np.sqrt(np.sum(np.power(seq_f,2)))
+#     r2 = np.sqrt(np.sum(np.power(seq_g,2)))
+#     conv = np.sum(np.multiply(seq_g,seq_f))
+#     res = conv/(r1*r2)
+#     return res
+
+#     # ###################### 不分割，直接求和#########################
+#     # f_sum1 = np.sum((255-f)/255,axis=0)
+#     # f_sum2 = np.sum((255-f)/255,axis=1)
+#     # g_sum1 = np.sum((255-g)/255,axis=0)
+#     # g_sum2 = np.sum((255-g)/255,axis=1)
+#     # f_sum1 = f_sum1/np.max(f_sum1)
+#     # f_sum2 = f_sum2/np.max(f_sum2)
+#     # g_sum1 = g_sum1/np.max(g_sum1)
+#     # g_sum2 = g_sum2/np.max(g_sum2)
+#     # eu_dist1 = np.sqrt(np.sum((f_sum1 - g_sum1)**2))
+#     # eu_dist2 = np.sqrt(np.sum((f_sum2 - g_sum2)**2))
+#     # eu_dist = (eu_dist1+eu_dist2)/2
+#     # return eu_dist
+
+
+def HOG(f,g):
     l = max(max(f.shape),max(g.shape))
     f = np.pad(f,((int((l-f.shape[0])/2),int((l-f.shape[0])/2)),(int((l-f.shape[1])/2),int((l-f.shape[1])/2))),'constant',constant_values=(255,255))
     g = np.pad(g,((int((l-g.shape[0])/2),int((l-g.shape[0])/2)),(int((l-g.shape[1])/2),int((l-g.shape[1])/2))),'constant',constant_values=(255,255))
@@ -14,12 +75,24 @@ def R(f,g):
     g = np.pad(g,((0,l-g.shape[0]),(0,l-g.shape[1])),'constant',constant_values=(255,255))
     cv2.imwrite('tmp/f.bmp',f)
     cv2.imwrite('tmp/g.bmp',g)
-    r1 = np.sqrt(np.sum(np.power(f,2)))
-    r2 = np.sqrt(np.sum(np.power(g,2)))
-    conv = np.sum(np.multiply(f,g))
+    f = cv2.imread('tmp/f.bmp')
+    g = cv2.imread('tmp/g.bmp')
+    winSize = (32,32)
+    blockSize = (8,8)
+    blockStride = (8,8)
+    cellSize = (8,8)
+    nbins = 6
+    winStride = (4,4)
+    padding = (4,4)
+    hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nbins)
+    # hog = cv2.HOGDescriptor()
+    f_hog = hog.compute(f, winStride, padding).reshape((-1,))
+    g_hog = hog.compute(g, winStride, padding).reshape((-1,))
+    r1 = np.sqrt(np.sum(np.power(f_hog,2)))
+    r2 = np.sqrt(np.sum(np.power(g_hog,2)))
+    conv = np.sum(np.multiply(f_hog,g_hog))
     res = conv/(r1*r2)
     return res
-
 
 
 def split(img):
@@ -150,48 +223,20 @@ for root,parent,files in os.walk('chars'):
         LABEL.append(label)
 
 
+# for num in topredict:
+#     min_d = 0
+#     for char in DICT: 
+#         this_d = HOG(num,char)
+#         if this_d > min_d:
+#             min_d = this_d
+#             pred = LABEL[DICT.index(char)]    
+#     print(pred)
+
 for num in topredict:
     max_r = 0
     for char in DICT: 
-        this_r = R(num,char)
+        this_r = HOG(num,char)
         if this_r > max_r:
             max_r = this_r
             pred = LABEL[DICT.index(char)]    
     print(pred)
-
-
-
-# for num in DICT:
-#     (row,col) = np.shape(up)
-#     (w,h) = np.shape(num)
-#     label = LABEL[DICT.index(num)]
-#     for i in range(row-h):
-#         for j in range(col-w):
-#             window = up[i:i+h,j:j+w]
-#             # while(1):
-#             #     cv2.imshow("out",window)
-#             #     k = cv2.waitKey(1) & 0xFF
-#             #     if k ==27:
-#             #         break
-            
-# (row,col) = np.shape(up)
-# (w,h) = (31,31) # sliding window
-# for i in range(row-h):
-#     for j in range(col-w):
-#         window = up[i:i+h,j:j+w]
-#         max_r = 0
-#         pred = ''
-#         for num in DICT: 
-#             this_r = R(window,num)
-#             if this_r > max_r:
-#                 max_r = this_r
-#                 pred = LABEL[DICT.index(num)]
-#         if max_r>0.9:
-#             print(max_r,pred)
-
-#         # while(1):
-#         #     cv2.imshow("out",window)
-#         #     k = cv2.waitKey(1) & 0xFF
-#         #     if k ==27:
-#         #         break
-        
