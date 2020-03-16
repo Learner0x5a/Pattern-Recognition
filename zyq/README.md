@@ -6,10 +6,12 @@
 - 用ppt上的做法建立新特征发现并没有什么用
 
 效果图1：
-![avatar](./1.png)
+
+<img src="./1.png" width = "100" height = "100" div align=center />
 
 
 效果图2:
-![avatar]((./2.png))
+
+<img src="./2.png" width = "100" height = "100" div align=center />
 
 
