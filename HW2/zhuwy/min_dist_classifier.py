@@ -1,4 +1,3 @@
-from sklearn.neighbors import KNeighborsClassifier
 import numpy as np 
 import matplotlib
 matplotlib.use('AGG')#或者PDF, SVG或PS
@@ -41,5 +40,3 @@ plt.plot(line_x,line_y,color='orange',linestyle='-.',label='separating plane')
 plt.legend()
 plt.savefig("dist.png")
 # plt.clf()
-
-knn = KNeighborsClassifier(3)
