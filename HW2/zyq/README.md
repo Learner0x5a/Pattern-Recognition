@@ -4,13 +4,13 @@
 
 效果图1：
 
-<img src="./q11.png" width = "100" height = "100" div align=center />
+<img src="./q11.png"  div align=center />
 
 
-<img src="./q12.png" width = "100" height = "100" div align=center />
+<img src="./q12.png"  div align=center />
 
 效果图2:
 
-<img src="./q2.png" width = "100" height = "100" div align=center />
+<img src="./q2.png"  div align=center />
 
 
