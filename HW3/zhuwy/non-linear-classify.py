@@ -1,3 +1,9 @@
+'''
+作图
+    超平面分割
+    3d数据分布
+    tsne
+'''
 import numpy as np
 from sklearn.decomposition import PCA, KernelPCA
 from sklearn.metrics import mean_squared_error

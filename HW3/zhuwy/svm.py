@@ -1,6 +1,8 @@
+'''
+SVM
+'''
 import numpy as np
 from sklearn.metrics import mean_squared_error
-
 import matplotlib
 matplotlib.use('AGG')
 import matplotlib.pyplot as plt
@@ -8,10 +10,7 @@ import matplotlib.pyplot as plt
 W1 = np.array([(1,1),(2,2),(3,3),(1,3),(3,1)])
 W2 = np.array([(1,2),(2,1),(2,3),(3,2)])
 W = np.vstack((W1,W2))
-'''
-SVM
-'''
-from sklearn.linear_model import LinearRegression as LR
+
 labels = np.array([0,0,0,0,0,1,1,1,1])
 def plot_hyperplane(model,X,y,h=0.01,draw_sv=False):
     # create a mesh to plot in
