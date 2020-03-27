@@ -1,4 +1,4 @@
-### Yunqi's Solution for HW2
+### Yunqi's Solution for HW1
 思路
 - 模板匹配解决第一问
 - 用最低亮度的条纹做mask去除划痕
