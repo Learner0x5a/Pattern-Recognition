@@ -6,14 +6,14 @@
 
 效果图1：
 
-<img src="./p1_1.png" width = "250" height = "250" div align=center />
+<img src="./p1\_1.png" width = "250" height = "250" div align=center />
 
 <img src="./p2.png" width = "250" height = "250" div align=center />
 
-<img src="./p3_1.png" width = "250" height = "250" div align=center />
+<img src="./p3\_1.png" width = "250" height = "250" div align=center />
 
 
-<img src="./p3_2.png" width = "250" height = "250" div align=center />
+<img src="./p3\_2.png" width = "250" height = "250" div align=center />
 
 
 
