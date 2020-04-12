@@ -10,12 +10,12 @@ X1 = np.array([(3,4),(3,8),(2,6),(4,6)])
 X2 = np.array([(3,0),(3,-4),(1,-2),(5,-2)])
 X = np.concatenate((X1,X2),axis=0)
 Y = np.concatenate((np.zeros(X1.shape[0]),np.ones(X2.shape[0])),axis=0)
-plt.scatter(X1[:,0],X1[:,1],label='X1')
-plt.scatter(X2[:,0],X2[:,1],label='X2')
+plt.scatter(X1[:,0],X1[:,1],label='W1')
+plt.scatter(X2[:,0],X2[:,1],label='W2')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.legend()
-print(X1,X2)
+# print(X1,X2)
 
 m1 = np.mean(X1,axis=0)
 m2 = np.mean(X2,axis=0)
@@ -23,7 +23,7 @@ m1_col = m1[:,np.newaxis]
 m1_row = m1[np.newaxis,:]
 m2_col = m2[:,np.newaxis]
 m2_row = m2[np.newaxis,:]
-print(m1,m2,m1_col.shape,m1_row.shape)
+# print(m1,m2,m1_col.shape,m1_row.shape)
 
 
 
@@ -56,7 +56,7 @@ print("%f x1^2 + %f x2^2 + %f x1*x2 + %f x1 + %f x2 + %f = 0" %
 
 
 x = np.arange(0,6,0.01)
-y = np.arange(-10,10,0.01)
+y = np.arange(-5,10,0.01)
 x,y = np.meshgrid(x,y)
 # -0.562500 x1^2 + 0.000000 x2^2 + 0.000000 x1*x2 + 3.375000 x1 + 3.000000 x2 + -10.369353 = 0
 z = -0.562500*np.power(x,2) + 3.375000*x + 3*y - 10.369353
