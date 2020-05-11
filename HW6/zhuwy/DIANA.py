@@ -59,7 +59,7 @@ x,y = np.meshgrid(x,y)
 
 z = -2.009301*np.power(x,2) - 0.047216*np.power(y,2) + 0.530450*np.multiply(x,y) + 8.89763*x - 0.087204*y - 8.613675
 plt.contour(x,y,z,0)
-plt.savefig('nb.png')
+# plt.savefig('nb.png')
 
 
 from sklearn.metrics import euclidean_distances
@@ -74,6 +74,7 @@ def dist_matrix(X):
 distance_matrix = dist_matrix(X)
 # print(distance_matrix.shape)
 points = []
+
 for x,y in X:
     points.append('('+str(x)+','+str(y)+')')
 # print(points)
@@ -84,7 +85,7 @@ def avg_dist_within_group_element(point, group):
     max_diameter = -np.inf
     sum_dist = 0
     for i in group:
-        sum_dist += distance_matrix[point][i]   
+        sum_dist += distance_matrix[point][i] 
         if(distance_matrix[point][i] > max_diameter):
             max_diameter = distance_matrix[point][i]
     if len(group) > 1:
@@ -114,13 +115,13 @@ def splinter(main_group, splinter_group):
             max_distance = diff
             max_distance_point = point
     if max_distance > 0:
-        return  (max_distance_point, True)
+        return (max_distance_point, True)
     else:
         return (-1, False)
     
 def split(group):
     main_group = group
-    splinter_group = []    
+    splinter_group = []
     (max_distance_point,is_splinter) = splinter(main_group, splinter_group)
     while is_splinter:
         main_group.remove(max_distance_point)
@@ -129,14 +130,14 @@ def split(group):
     
     return (main_group, splinter_group)
 
-def max_diameter(cluster_list):
+def max_diameter(cluster_list): # 求各个类中直径最大的
     max_diameter_cluster_point = None
     max_diameter_cluster_value = -np.inf
     index = 0
     for group in cluster_list:
         for i in group:
             for j in group:
-                if distance_matrix[i][j]  > max_diameter_cluster_value:
+                if distance_matrix[i][j] > max_diameter_cluster_value:
                     max_diameter_cluster_value = distance_matrix[i][j]
                     max_diameter_cluster_point = index
         index +=1
@@ -144,13 +145,33 @@ def max_diameter(cluster_list):
     if(max_diameter_cluster_value <= 0):
         return -1
     return max_diameter_cluster_point
-    
 
-fig = plt.figure()
+def diameter(clu): # 求类的直径的两个端点
+    value_clu = []
+    for pt_str in clu:
+        pt_str = pt_str[1:-1].split(',')
+        value_clu.append((float(pt_str[0]),float(pt_str[1])))
+    # print(value_clu)
+    dia = -np.inf # 直径
+    endpt1 = None # 端点1
+    endpt2 = None # 端点2
+    for pt1 in value_clu:
+        for pt2 in value_clu:
+            dist = euclidean_distances([pt1],[pt2])[0]
+            if dist > dia:
+                dia = dist
+                endpt1 = pt1
+                endpt2 = pt2     
+    return np.array(endpt1),np.array(endpt2),dia
+
+
+# fig = plt.figure()
+
 R = ([points]) # current clusters
 hierarchy = 1
 index = 0
 print(hierarchy, R)
+clr = ['r','g','b','c','m','y','k','w','navy','peru','azure']
 while(index!=-1):
     (A, B) = split(R[index])
     del R[index]
@@ -159,3 +180,16 @@ while(index!=-1):
     index = max_diameter(R)
     hierarchy += 1
     print(hierarchy, R)
+    # 求各个类的端点画圆。
+    for clu in R:
+        if len(clu) > 1: # 只有一个点的跳过
+            endpt1,endpt2,dia = diameter(clu)
+            circle1 = plt.Circle(xy = (endpt1 + endpt2)/2.,color=clr[hierarchy], radius=dia/2+0.1, alpha=0.1)
+            plt.gcf().gca().add_artist(circle1)
+
+
+plt.savefig('hierarchy.png')
+
+
+
+

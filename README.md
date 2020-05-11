@@ -11,4 +11,4 @@ HW4: 梯度下降, KNN, LDA(Fisher)
 
 HW5: 朴素贝叶斯分类
 
-HW6: K-means, 朴素贝叶斯, 层次聚类(DIANA) `怎么画图?`
+HW6: K-means, 朴素贝叶斯, 层次聚类(DIANA) `暴力画图`
