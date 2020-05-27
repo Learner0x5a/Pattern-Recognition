@@ -45,7 +45,7 @@ model.add(Dense(1, activation='sigmoid'))
 
 adam = Adam()
 model.compile(loss='binary_crossentropy', optimizer=adam, metrics=["accuracy"])
-
+plot_model(model,'cnn.png',show_shapes=True,rankdir='LR')
 model.fit(X_train, Y_train, batch_size=32, epochs=30)
 test_loss,test_acc = model.evaluate(X_test, Y_test, batch_size=32)
 pred = model.predict(X_test)
