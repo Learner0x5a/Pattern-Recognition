@@ -59,7 +59,7 @@ model.fit(X_train,y_train)
 pred = model.predict(X_test)
 
 # 拒识之前：mse: 1.1006493506493507 precision: 0.32588262697993 recall: 0.4837662337662338 f1: 0.38924413491531606
-# 拒识之前，UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 in labels with no predicted samples.
+# 拒识之后，UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 in labels with no predicted samples.
 # label 2 从来没有被预测到，所以F-score没有计算这项 label， 因此这种情况下 F-score 就被当作为 0.0 ；
 # 根据距离拒识
 from sklearn.neighbors import NearestNeighbors
