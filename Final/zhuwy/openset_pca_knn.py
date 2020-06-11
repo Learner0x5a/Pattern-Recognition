@@ -73,7 +73,7 @@ log = []
 thres = np.linspace(1e-2,2)
 for thre in thres:
     pred = model.predict(X_test)
-    pred[np.where(distances<thre)[0]] = 2
+    pred[np.where(distances>thre)[0]] = 2
     mse = mean_squared_error(y_test,pred)
     acc = accuracy_score(y_test,pred)
     recall = recall_score(y_test,pred, average='weighted')
